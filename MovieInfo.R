@@ -24,13 +24,14 @@ MovieInfo<-function(url){
   
   runtime <- html_nodes(html,"#overview-top time") %>% 
     html_text() %>% 
-    stri_replace_all_regex("\n|min", "") %>%
-    stri_trim() %>% 
+    stri_extract_first_regex("\\d+") %>%
+    as.numeric() %>% 
     ifelse(length(.)>0, ., NA)
   
   year <- html_nodes(html, ".header .nobr") %>% 
     html_text() %>%
     stri_extract_first_regex("\\d{4}") %>% 
+    as.numeric() %>%
     ifelse(length(.)>0, ., NA)
   
   
@@ -38,51 +39,46 @@ MovieInfo<-function(url){
     html_text() 
   
   country <- x[stri_detect_fixed(x, "Country:")] %>%
-    stri_replace_all_regex("\n|(See more)|Â»|Country:|[|]", "") %>% 
+    stri_replace_all_regex("\n|(See more)|»|Country:|[|]", "") %>% 
     stri_extract_all_words() %>%
     unlist() %>%
     stri_paste(collapse=", ") %>%
     ifelse(length(.)>0, ., NA)
   
   language <- x[stri_detect_fixed(x, "Language:")] %>%
-    stri_replace_all_regex("\n|(See more)|Â»|Language:", "") %>%
+    stri_replace_all_regex("\n|(See more)|»|Language:", "") %>%
     stri_extract_all_words() %>%
     unlist() %>%
     stri_paste(collapse=", ") %>%
     ifelse(length(.)>0, ., NA)
   
   budget <- x[stri_detect_fixed(x, "Budget:")] %>%
-    stri_replace_all_regex(".*:|\n|(See more)|Â»", "") %>%
-    stri_extract_first_words() %>%
-    stri_extract_all_regex("\\d") %>%
+    stri_replace_all_regex(",", "") %>%
+    stri_extract_all_regex("\\d+") %>%
     unlist() %>%
-    stri_paste(collapse="") %>% 
+    as.numeric() %>%
     ifelse(length(.)>0, ., NA)
   
   release_date <- x[stri_detect_fixed(x, "Release Date:")] %>%
-    stri_replace_all_regex(".*:|\n|(See more)|Â»", "") %>%
+    stri_replace_all_regex(".*:|\n|(See more)|»", "") %>%
     stri_extract_first_regex(".*(?= [(])") %>%
     stri_trim() %>% 
     ifelse(length(.)>0, ., NA)
   
   opening_weekend <- x[stri_detect_fixed(x, "Opening Weekend:")] %>%
-    stri_extract_all_regex("(?<=Opening Weekend: ).*(?=[\n])", "") %>%
-    stri_extract_all_regex("\\d") %>%
-    unlist() %>%
-    stri_paste(collapse="") %>% 
+    stri_replace_all_regex(",", "") %>%
+    stri_extract_first_regex("\\d+") %>%
+    as.numeric() %>% 
     ifelse(length(.)>0, ., NA)
   
   gross <- x[stri_detect_fixed(x, "Gross:")] %>%
-    stri_replace_all_regex(".*:|\n|(See more)|Â»", "") %>%
-    stri_extract_first_words() %>%
-    stri_trim() %>%
-    stri_extract_all_regex("\\d") %>%
-    unlist() %>%
-    stri_paste(collapse="") %>% 
+    stri_replace_all_regex(",", "") %>%
+    stri_extract_first_regex("\\d+") %>%
+    as.numeric() %>% 
     ifelse(length(.)>0, ., NA)
   
   production_co <- x[stri_detect_fixed(x, "Production Co")] %>%
-    stri_replace_all_regex(".*:|,|(See more)|Â»", "") %>%
+    stri_replace_all_regex(".*:|,|(See more)|»|[\"]", "") %>%
     stri_extract_all_regex("(?<=\n).*(?=\n)") %>%
     unlist() %>%
     stri_trim() %>%
@@ -91,7 +87,7 @@ MovieInfo<-function(url){
     ifelse(length(.)>0, ., NA)
   
   sound_mix <- x[stri_detect_fixed(x, "Sound Mix:")] %>%
-    stri_replace_all_regex(".*:|(See more)|Â»|[|]", "") %>%
+    stri_replace_all_regex(".*:|(See more)|»|[|]|[\"]|[;]", "") %>%
     stri_extract_all_regex("(?<= {4}).*(?=\n)") %>%
     unlist() %>%
     stri_trim() %>%
@@ -100,7 +96,7 @@ MovieInfo<-function(url){
     ifelse(length(.)>0, ., NA)
   
   color <- x[stri_detect_fixed(x, "Color:")] %>%
-    stri_replace_all_regex(".*:|\n|(See more)|Â»", "") %>%
+    stri_replace_all_regex(".*:|\n|(See more)|»|[\"]", "") %>%
     stri_trim() %>% 
     ifelse(length(.)>0, ., NA)
   
@@ -112,20 +108,20 @@ MovieInfo<-function(url){
   html2 <- stri_paste(url,"fullcredits") %>% html() 
   
   director <- html_nodes(html2,".simpleCreditsTable:nth-child(2) a") %>% 
-     html_text() %>% stri_trim() %>% 
-     ifelse(length(.)>0, .,  NA)
+    html_text() %>% stri_trim() %>% 
+    ifelse(length(.)>0, .,  NA)
   
   writers <- html_nodes(html2,".simpleCreditsTable:nth-child(4) a") %>% 
-     html_text() %>% stri_trim() %>% stri_paste(collapse = ", ") %>% 
-     ifelse(length(.)>0, .,  NA)
+    html_text() %>% stri_trim() %>% stri_paste(collapse = ", ") %>% 
+    ifelse(length(.)>0, .,  NA)
   
   cast <- html_nodes(html2,".itemprop") %>% html_text() %>%
-     stri_trim() %>% unique() %>% stri_paste(collapse = ", ") %>% 
-     ifelse(length(.)>0, .,  NA)
+    stri_trim() %>% unique() %>% stri_paste(collapse = ", ") %>% 
+    ifelse(length(.)>0, .,  NA)
   
   keywords <- stri_paste(url, "keywords") %>% html() %>% 
-     html_nodes(".sodatext a") %>% html_text() %>% 
-     stri_paste( collapse=", ") %>% ifelse(length(.)>0, .,  NA)
+    html_nodes(".sodatext a") %>% html_text() %>% 
+    stri_paste( collapse=", ") %>% ifelse(length(.)>0, .,  NA)
   
   list(title=title, original_title=original_title, genre=genre, rating=rating,
        runtime = runtime, year=year, country=country, 
@@ -148,7 +144,6 @@ url <-"http://www.imdb.com/title/tt0065908/"
 url<-"http://www.imdb.com/title/tt0460989/"
 url<-"http://www.imdb.com/title/tt0079336/"
 url<-"http://www.imdb.com/title/tt0944947/"
- 
+url <- "http://www.imdb.com/title/tt1666801/"
 
 MovieInfo(url)
-
