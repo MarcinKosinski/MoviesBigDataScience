@@ -11,7 +11,7 @@ MovieInfo<-function(url){
     html_text() %>%
     stri_extract_all_regex("(?<=\").*(?=\")") %>%
     unlist %>%
-    ifelse(length(.)>0, ., NA)
+    ifelse(length(.)>0, ., title)
   
   genre <- html_nodes(html, ".infobar .itemprop") %>% html_text() %>% 
     stri_paste(collapse=", ") %>% 
