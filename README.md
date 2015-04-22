@@ -1,16 +1,25 @@
 Co ściągamy:
    
-- a
-- b
-- c
-- d
-- e
-- f
-- g
-- h
-- i
-- j
-- k
+- tytul 
+- oryginalny tytul 
+- gatunek
+- ocena
+- słowa kluczowe
+- rok produkcji 
+- dlugosc
+- kraj 
+- jezyk
+- date premiery
+- budzet
+- weekend otwarcia
+- dochod
+- produkcja
+- dzwiek
+- kolor
+- proporcje obrazu
+- rezyser
+- scenariusz 
+- obsada 
 
 
 Ile mamy linków: 25 000
