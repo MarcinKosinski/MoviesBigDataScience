@@ -35,6 +35,8 @@ Co ciekawego można wyczytać z naszej bazdy danych:
 
 ![graph1](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot1.jpeg)
 
-![graph1](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot02.jpeg)
+![graph2](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot02.jpeg)
 
-![graph1](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot03.jpeg)
+![graph3](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot03.jpeg)
+
+![graph4](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot04.jpeg)

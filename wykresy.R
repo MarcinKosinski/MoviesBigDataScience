@@ -51,3 +51,10 @@ x %>%
    ggplot( aes( x = log(budget+1), y = rating)) +
    geom_point() + geom_smooth() +geom_jitter()+ theme_wsj() +ggtitle("log(Budżet) a ocena filmu")
 
+x %>%
+   filter( year > 2009) %>%
+   mutate( year = as.character(year)) %>%
+   ggplot( aes( x = runtime )) +
+   geom_histogram(binwidth = 2) + theme_wsj() +
+   ggtitle("Długość filmu a rok produkcji > 2010") +
+   facet_grid(year~.)
