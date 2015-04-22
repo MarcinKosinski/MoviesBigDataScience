@@ -15,8 +15,8 @@ GetMovieInfo <- function(x) {
 }
 
 
-lapply(urlDf[9001:10000,], GetMovieInfo)
+lapply(urlDf[10001:11000,], GetMovieInfo)
 
 
-xx <- read.table("MoviesData.txt", sep=";", header=TRUE)
+#xx <- read.table("MoviesData.txt", sep=";", header=TRUE)
   
