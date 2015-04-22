@@ -136,14 +136,14 @@ MovieInfo<-function(url){
 library(rvest)
 library(stringi)
 library(dplyr)
-
-# examples link:
-url<-"http://www.imdb.com/title/tt1074638/"
-url<-"http://www.imdb.com/title/tt0095016/"
-url <-"http://www.imdb.com/title/tt0065908/"
-url<-"http://www.imdb.com/title/tt0460989/"
-url<-"http://www.imdb.com/title/tt0079336/"
-url<-"http://www.imdb.com/title/tt0944947/"
-url <- "http://www.imdb.com/title/tt1666801/"
-
-MovieInfo(url)
+# 
+# # examples link:
+# url<-"http://www.imdb.com/title/tt1074638/"
+# url<-"http://www.imdb.com/title/tt0095016/"
+# url <-"http://www.imdb.com/title/tt0065908/"
+# url<-"http://www.imdb.com/title/tt0460989/"
+# url<-"http://www.imdb.com/title/tt0079336/"
+# url<-"http://www.imdb.com/title/tt0944947/"
+# url <- "http://www.imdb.com/title/tt1666801/"
+# 
+# MovieInfo(url)

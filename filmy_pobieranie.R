@@ -17,14 +17,14 @@ while (i <= 100) {
      stri_paste("http://www.imdb.com", .)
   
   
-#   f <- file("MovieData.txt", open="a")
-#   for(i in 1:250) {
-#     tempMovie <- MovieInfo()
-#   }
-#   close(f)
+  
+
+   f <- file("MovieData.txt", open="a")
+
+  close(f)
 #   
   oneMovie <- vector(mode = "list", 250)
-  oneMovie <- lapply(linksMovies[1:length(linksMovies)], MovieInfo)
+  oneMovie <- lapply(linksMovies[1:2], MovieInfo)
   perSiteMovies <- do.call(rbind.data.frame, oneMovie)
   #df <- as.data.frame(df)
   write.table(perSiteMovies, "MoviesData.txt",
