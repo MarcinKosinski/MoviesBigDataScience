@@ -40,3 +40,5 @@ Co ciekawego można wyczytać z naszej bazdy danych:
 ![graph3](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot03.jpeg)
 
 ![graph4](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot04.jpeg)
+
+![graph5](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot05.jpeg)

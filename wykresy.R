@@ -58,3 +58,11 @@ x %>%
    geom_histogram(binwidth = 2) + theme_wsj() +
    ggtitle("Długość filmu a rok produkcji > 2010") +
    facet_grid(year~.)
+
+
+x %>%
+   group_by( year) %>%
+   summarise( ile = n()) %>%
+   ggplot( aes( x = year, y = ile)) +
+   geom_bar(stat="identity") + theme_wsj() +
+   ggtitle( "Rok a liczba filmów")
