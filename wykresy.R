@@ -49,5 +49,5 @@ x %>%
 x %>%
    mutate( rating = as.numeric(as.character(rating))) %>%
    ggplot( aes( x = log(budget+1), y = rating)) +
-   geom_point() + geom_smooth() + theme_wsj() +ggtitle("log(Budżet) a ocena filmu")
+   geom_point() + geom_smooth() +geom_jitter()+ theme_wsj() +ggtitle("log(Budżet) a ocena filmu")
 
