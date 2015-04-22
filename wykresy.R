@@ -36,3 +36,18 @@ freguencyTable %>%
    ggplot( aes( x = genre , y = Freq)) +
    geom_bar(stat="identity") +
    coord_flip() +theme_wsj() +ggtitle("Rozkład typów filmów w bazie")
+
+
+x %>%
+   filter( budget < 1.0e+08) %>%
+   mutate( rating = as.numeric(as.character(rating))) %>%
+   ggplot( aes( x = budget, y = rating)) +
+   geom_point() + geom_smooth() + theme_wsj() +ggtitle("Budżet a ocena filmu \n budżet < 10^8")
+
+
+
+x %>%
+   mutate( rating = as.numeric(as.character(rating))) %>%
+   ggplot( aes( x = log(budget+1), y = rating)) +
+   geom_point() + geom_smooth() + theme_wsj() +ggtitle("log(Budżet) a ocena filmu")
+

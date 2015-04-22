@@ -16,7 +16,7 @@ mpolaczenie = dbConnect(sterownik,
 
 
 # przygotowanie bazy danych
-first_row <- MovieInfo("http://www.imdb.com/title/tt1666801/")
+#first_row <- MovieInfo("http://www.imdb.com/title/tt1666801/")
  
 #dbWriteTable(mpolaczenie, name="Grabarz_Kosinski_Wasniewski", as.data.frame(first_row) )
 
@@ -26,7 +26,7 @@ MoviesUrl <- read.table("C:/Users/Marcin/Desktop/AFTY-DZIUBAS-04-04/MoviesBigDat
 
 MoviesUrl <- unlist( MoviesUrl )
 
-lapply( MoviesUrl[500:length(MoviesUrl)], function( element ){
+lapply( MoviesUrl[1800:length(MoviesUrl)], function( element ){
     
    tryCatch({
          dbGetQuery(mpolaczenie, statement = paste0("insert into Grabarz_Kosinski_Wasniewski (title,original_title,genre,rating,runtime,year,country,language,release_date,budget,gross,opening_weekend,production_co,color,aspect_ratio,sound_mix,director,writers,cast,keywords) VALUES (\"",  tryCatch({ repair_encoding(paste0( unlist(MovieInfo( element )), collapse="\",\""))}, error = function(cond) paste0( unlist(MovieInfo( element )), collapse="\",\"")),  "\")") )
