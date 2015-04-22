@@ -30,3 +30,7 @@ Ile mamy filmów w bazie danych:
    
    
 Co ciekawego można wyczytać z naszej bazdy danych:
+
+
+
+![graph1](https://raw.githubusercontent.com/MarcinKosinski/MoviesBigDataScience/master/plot1.jpeg)
