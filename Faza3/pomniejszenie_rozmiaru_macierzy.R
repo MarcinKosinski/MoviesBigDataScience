@@ -56,9 +56,8 @@ leaveClosest <- function( matrixInput, n ){
    pb <- txtProgressBar(min = 0, max = nrow(matrixInput), style = 3)
    for(i in 1:nrow(matrixInput)){
       
-      sapply(1:(n+1), function(element){
-         which( element == order(matrixInput[i,]))
-      }) -> closest
+      # wybor indeksow n najblizszych filmow
+      closest <- order(matrixInput[i,])[1:(n+1)]
       
       matrixInput[i,-closest] <- 0
       
