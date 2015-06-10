@@ -11,7 +11,7 @@ load("data/moviesInfo.rda")
 load("data/keywords.rda")
 load("data/people.rda")
 
-returnFamiliar <- function( matrixInput, n,k, i){
+returnFamiliar <- function( matrixInput, n, k, i){
    
    # mamy dla niego najbardziej podobne filmy
    which( matrixInput[i,] > 0 ) -> numerki_podobnych
@@ -22,7 +22,7 @@ returnFamiliar <- function( matrixInput, n,k, i){
    kk<-0
    for(j in n_najblizszych_do_i){
       kk <- kk+1
-      which( moviesInfo[j,] > 0 ) -> numerki_podobnych
+      which( matrixInput[j,] > 0 ) -> numerki_podobnych
       
       closest <- order(matrixInput[j,numerki_podobnych])[1:k]
       numerki_podobnych[closest] -> n_najblizszych_do_j
@@ -98,18 +98,98 @@ shinyServer(function(input,output){
 #    })
    
    
-   mmr22 <- reactive({
-      if(input$preferencje=="ogolnie"){
-         returnFamiliar(moviesInfo,n,k,i) -> podobne_do_i 
-      }
-      if(input$preferencje=="fabula"){
-         returnFamiliar(keywords,n,k,i) -> podobne_do_i 
-      }
-      if(input$preferencje=="obsada"){
-         returnFamiliar(people,n,k,i) -> podobne_do_i 
-      }
-      mm <- as.matrix(podobne_do_i)
+#    mmr22 <- reactive({
+#       if(input$preferencje=="ogolnie"){
+#          returnFamiliar(moviesInfo,n,k,i) -> podobne_do_i 
+#       }
+#       if(input$preferencje=="fabula"){
+#          returnFamiliar(keywords,n,k,i) -> podobne_do_i 
+#       }
+#       if(input$preferencje=="obsada"){
+#          returnFamiliar(people,n,k,i) -> podobne_do_i 
+#       }
+#       mm <- as.matrix(podobne_do_i)
+#       
+#       
+#       #zamieniam na postac kolumnowa 
+#       mmr <-  melt(mm)[melt(upper.tri(mm))$value,]
+#       #sorutje po X1 X2
+#       mmr <- mmr[order(mmr[,1],mmr[,2]),]
+#       mmr2 <- mmr[mmr[, 3]>0,] 
+#       
+#       # numery wezlow musza byc od 0(zamieniam to tak)
+#       mmr2[, 1] <- as.integer(as.factor(mmr2[, 1]))-1
+#       mmr2[, 2] <- as.integer(as.factor(mmr2[, 2]))-1
+#       #mmr2[, 3] <- log(mmr2[, 3])
+#       mmr2[, 3] <- max(mmr2[, 3])/(mmr2[, 3])
+#       
+#       #mmr2 <- mmr[mmr[, 3]>0,] 
+#       names(mmr2) <- c('source', 'target', 'value')
+#       mmr2
+#    })
+#    
+#    
+#    mmrNodes2 <- reactive({
+#       if(input$preferencje=="ogolnie"){
+#          moviesInfo -> moviesInfo2 
+#       }
+#       if(input$preferencje=="fabula"){
+#          keywords -> moviesInfo2
+#       }
+#       if(input$preferencje=="obsada"){
+#          people -> moviesInfo2
+#       }
+#       #zamieniam na postac kolumnowa 
+#       mmr <-  melt(mm)[melt(upper.tri(mm))$value,]
+#       #sorutje po X1 X2
+#       mmr <- mmr[order(mmr[,1],mmr[,2]),]
+#       mmr2 <- mmr[mmr[, 3]>0,] 
+#       
+#       # numery wezlow musza byc od 0(zamieniam to tak)
+#       mmr2[, 1] <- as.integer(as.factor(mmr2[, 1]))-1
+#       mmr2[, 2] <- as.integer(as.factor(mmr2[, 2]))-1
+#       #mmr2[, 3] <- log(mmr2[, 3])
+#       mmr2[, 3] <- max(mmr2[, 3])/(mmr2[, 3])
+#       
+#       #mmr2 <- mmr[mmr[, 3]>0,] 
+#       names(mmr2) <- c('source', 'target', 'value')
+#       
+#       nazwy <- unique(sort(c(as.character(mmr2[,1]),as.character(mmr2[,2]))))
+#       grupy <- as.integer(rownames(moviesInfo2)[i]==nazwy)
+#       mmrNodes <- data.frame(name=nazwy, group=grupy)
+#       
+#       name_genre <- movies[,c('title','genre')][!duplicated(movies$title),]
+#       name_genre$genre <- stri_extract_first_regex(name_genre$genre,'\\p{l}*')
+#       
+#       mmrNodes <- name_genre[name_genre$title%in%nazwy,]
+#       mmrNodes <- mmrNodes[order(mmrNodes$title),]
+#       rownames(mmrNodes) <- NULL
+#       names(mmrNodes) <- c('name', 'group')
+#       mmrNodes
+#       
+#    })
+   
+   
+   output$graph <- renderForceNetwork({
+      i <- as.numeric(input$movie)
+      n <- as.numeric(input$liczba_filmow)
+      k <- as.numeric(input$ile_podobnych_do_najpodobniejszych)
       
+            if(input$preferencje=="ogolnie"){
+               moviesInfo -> moviesInfo2 
+            }
+            if(input$preferencje=="fabula"){
+               keywords -> moviesInfo2
+            }
+            if(input$preferencje=="obsada"){
+               people -> moviesInfo2
+            }
+
+      returnFamiliar(moviesInfo2,n,k,i) -> podobne_do_i 
+      
+      #nazwy <- unique(sort(c(rownames(mm),colnames(mm))))
+
+      mm <- as.matrix(podobne_do_i)
       
       #zamieniam na postac kolumnowa 
       mmr <-  melt(mm)[melt(upper.tri(mm))$value,]
@@ -125,20 +205,7 @@ shinyServer(function(input,output){
       
       #mmr2 <- mmr[mmr[, 3]>0,] 
       names(mmr2) <- c('source', 'target', 'value')
-      mmr2
-   })
-   
-   
-   mmrNodes2 <- reactive({
-      if(input$preferencje=="ogolnie"){
-         moviesInfo -> moviesInfo2 
-      }
-      if(input$preferencje=="fabula"){
-         keywords -> moviesInfo2
-      }
-      if(input$preferencje=="obsada"){
-         people -> moviesInfo2
-      }
+      #nazwy <- unique(sort(c(rownames(mm),colnames(mm))))
       grupy <- as.integer(rownames(moviesInfo2)[i]==nazwy)
       mmrNodes <- data.frame(name=nazwy, group=grupy)
       
@@ -149,29 +216,12 @@ shinyServer(function(input,output){
       mmrNodes <- mmrNodes[order(mmrNodes$title),]
       rownames(mmrNodes) <- NULL
       names(mmrNodes) <- c('name', 'group')
-      mmrNodes
-      
-   })
-   
-   
-   output$graph <- renderForceNetwork({
-      i <- as.numeric(input$movie)
-      n <- as.numeric(input$liczba_filmow)
-      k <- as.numeric(input$ile_podobnych_do_najpodobniejszych)
-      
 
-      mm <- as.data.frame(mmr22())
-      nn <- as.data.frame(mmrNodes2())
-      #returnFamiliar(moviesInfo2(),n,k,i) -> podobne_do_i 
-      
-      #nazwy <- unique(sort(c(rownames(mm),colnames(mm))))
-      
-
-      forceNetwork(Links=mmr22(), Nodes=mmrNodes2(), Source = "source",
+      forceNetwork(Links=mmr2, Nodes=mmrNodes, Source = "source",
                    Target = "target", Value = "value", NodeID = "name",
                    Group = "group", opacity = 0.9,
                    linkDistance=JS('function(d) {', paste('return d.value *', input$odleglosc,';'), '}'))
-      
+
    }
    )
    
