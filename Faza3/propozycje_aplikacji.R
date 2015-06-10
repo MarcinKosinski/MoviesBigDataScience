@@ -4,30 +4,28 @@ i <- 350
 which( moviesInfo[i,] > 0 ) -> numerki_podobnych
 
 n<-5
-sapply(1:n, function(element){
-  which( element == order(moviesInfo[i,numerki_podobnych]))
-}) -> najblizsze_n
+returnFamiliar <- function( matrixInput, n){
+closest <- order(matrixInput[i,numerki_podobnych])[1:n]
+numerki_podobnych[closest] -> n_najblizszych_do_i
 
-
-
-# dla najblizszych tez bierzemy 5 najbardziej podobnych
-sapply(numerki_podobnych[najblizsze_n], function(element){
-  numerki_podobnych_2 <- which( moviesInfo[element,] > 0 )
-  sapply(1:n, function(element2){
-    which( element2  == order(moviesInfo[element,numerki_podobnych_2]))
-  }
-  ) -> x_numerki
-  numerki_podobnych_2[x_numerki]
+matrix(0,n,n) -> pomocnicza
+for(j in n_najblizszych_do_i){
+  which( moviesInfo[j,] > 0 ) -> numerki_podobnych
   
+closest <- order(matrixInput[j,numerki_podobnych])[1:n]
+numerki_podobnych[closest] -> n_najblizszych_do_j
+pomocnicza[j,] <- n_najblizszych_do_j
+
 }
-) -> numeraski
-unique(as.vector(numeraski)) -> numeraski2
-
-moviesInfo[ c(i,numerki_podobnych[najblizsze_n], numeraski2),
-            c(i,numerki_podobnych[najblizsze_n], numeraski2)] -> podobne_do_i
 
 
+matrixInput[ c(i,n_najblizszych_do_i, unique(as.vector(pomocnicza))),
+            c(i,n_najblizszych_do_i, unique(as.vector(pomocnicza)))] -> podobne_do_i
 
+return(podobne_do_i)
+}
+
+returnFamiliar(moviesInfo) -> podobne_do_i 
 mm <- as.matrix(podobne_do_i)
 
 library(reshape)
