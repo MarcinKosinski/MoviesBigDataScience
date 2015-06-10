@@ -1,4 +1,4 @@
-i <- 500
+i <- 350
 
 # mamy dla niego najbardziej podobne filmy
 which( moviesInfo[i,] > 0 ) -> numerki_podobnych
@@ -40,6 +40,8 @@ nazwy <- unique(sort(c(as.character(mmr2[,1]),as.character(mmr2[,2]))))
 # numery wezlow musza byc od 0(zamieniam to tak)
 mmr2[, 1] <- as.integer(as.factor(mmr2[, 1]))-1
 mmr2[, 2] <- as.integer(as.factor(mmr2[, 2]))-1
+#mmr2[, 3] <- log(mmr2[, 3])
+mmr2[, 3] <- max(mmr2[, 3])/(mmr2[, 3])
 
 #mmr2 <- mmr[mmr[, 3]>0,] 
 names(mmr2) <- c('source', 'target', 'value')
