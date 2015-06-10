@@ -1,10 +1,11 @@
 i <- 350
 
-# mamy dla niego najbardziej podobne filmy
-which( moviesInfo[i,] > 0 ) -> numerki_podobnych
+
 
 n<-5
-returnFamiliar <- function( matrixInput, n){
+returnFamiliar <- function( matrixInput, n, i){
+# mamy dla niego najbardziej podobne filmy
+which( matrixInput[i,] > 0 ) -> numerki_podobnych
 closest <- order(matrixInput[i,numerki_podobnych])[1:n]
 numerki_podobnych[closest] -> n_najblizszych_do_i
 
