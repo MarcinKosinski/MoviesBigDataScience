@@ -1,4 +1,9 @@
 library(shiny)
+library(stringi)
+library(reshape)
+library(networkD3)
+library(htmlwidgets)
+library(reshape)
 
 load("data/movies.rda")
 
@@ -14,29 +19,36 @@ shinyUI(fluidPage(
          selectInput("movie","Wybierz film:",tytul[-j], 13),
          # wybór preferencji
          radioButtons("preferencje",
-                     "Wybierz preferencje dla podobych filmĂłw:",
-                     c("obsada"="obsada", "fabuĹ‚a"="fabula", 
-                       "ogĂłlnie"="ogolnie")),
+                     "Wybierz preferencje dla podobych filmów:",
+                     c("obsada i ekipa filmowa"="obsada", "Słowa kluczowe filmu"="fabula", 
+                       "ogólne informacje o filmie"="ogolnie")),
          # wybór liczby podobnych filmów 
          selectInput("liczba_filmow",
-                     "Wybierz liczbe podobnych filmĂłw:",5:20, 10)
+                     "Wybierz liczbe podobnych filmów:",3:10, 5),
+         
+         selectInput("ile_podobnych_do_najpodobniejszych",
+                     "Wybierz liczbe podobnych filmów do podobnych:",0:10, 2),
+         sliderInput("odleglosc",
+                     "Przemnoż odległości w grafie :",min=1,max=100, value = 50)
          ),
+         
+         
       mainPanel("",
             tabsetPanel(
             tabPanel("Informacje o filmie",
                      p(""),
                      tableOutput("info"),
-                     p("ReĹĽyseria:"),
+                     p("Reżyseria:"),
                      verbatimTextOutput("director"),
                      p("Scenariusz:"),
                      verbatimTextOutput("writers"),
-                     p("GĹ‚Ăłwni aktorzy:"),
+                     p("Główni aktorzy:"),
                      verbatimTextOutput("cast")
                      ),
             tabPanel("Podobne filmy",
-                     p("Lista podobnych filmĂłw:"),
+                     p("Lista podobnych filmów:"),
                      verbatimTextOutput("podobne_lista"),
-                     p("Graf podobnych filmĂłw:"),
+                     p("Graf podobnych filmów:"),
                      forceNetworkOutput("graph")
             )
             

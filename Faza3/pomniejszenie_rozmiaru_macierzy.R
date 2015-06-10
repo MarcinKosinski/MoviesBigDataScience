@@ -1,7 +1,10 @@
 # pomniejszanie zbiorow danych
 load("Faza3/moviesInfoDist.rda")
+load("Faza3/peopleDist.rda")
+load("Faza3/keywordsDist.rda")
 #Wyciagniecie filmow z bazy danych
 load("Faza1/haslo.rda")
+haslo <- stri_reverse('64tl1bp6un9sqxp8')
 
 library(RMySQL)
 
@@ -45,7 +48,7 @@ removeDuplicatedMovies <- function(distObject, titles){
    return( distObject )
 }
 
-removeDuplicatedMovies(moviesInfoDist, titles) -> moviesInfoDist_noDups
+removeDuplicatedMovies(peopleDist, titles) -> peopleDist_noDups
 
 
 
@@ -70,10 +73,10 @@ leaveClosest <- function( matrixInput, n ){
    
 }
 
-leaveClosest( moviesInfoDist_noDups, 20 ) -> moviesInfoDist_noDups_closest
+leaveClosest( peopleDist_noDups, 20 ) -> peopleDist_noDups_closest
 
 #przejscie na postac rzadka
 library(Matrix)
-Matrix(moviesInfoDist_noDups_closest, sparse = TRUE) -> moviesInfo
-save(moviesInfo, file = "Faza3/moviesInfo.rda")
+Matrix(peopleDist_noDups_closest, sparse = TRUE) -> people
+save(people, file = "Faza3/people.rda")
 
