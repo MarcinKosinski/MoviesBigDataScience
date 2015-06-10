@@ -3,19 +3,25 @@ i <- 350
 
 
 n<-5
+
+
+
 returnFamiliar <- function( matrixInput, n, i){
+
 # mamy dla niego najbardziej podobne filmy
 which( matrixInput[i,] > 0 ) -> numerki_podobnych
 closest <- order(matrixInput[i,numerki_podobnych])[1:n]
 numerki_podobnych[closest] -> n_najblizszych_do_i
 
 matrix(0,n,n) -> pomocnicza
+kk<-0
 for(j in n_najblizszych_do_i){
+   kk <- kk+1
   which( moviesInfo[j,] > 0 ) -> numerki_podobnych
   
 closest <- order(matrixInput[j,numerki_podobnych])[1:n]
 numerki_podobnych[closest] -> n_najblizszych_do_j
-pomocnicza[j,] <- n_najblizszych_do_j
+pomocnicza[kk,] <- n_najblizszych_do_j
 
 }
 
@@ -26,7 +32,7 @@ matrixInput[ c(i,n_najblizszych_do_i, unique(as.vector(pomocnicza))),
 return(podobne_do_i)
 }
 
-returnFamiliar(moviesInfo) -> podobne_do_i 
+returnFamiliar(moviesInfo,n,i) -> podobne_do_i 
 mm <- as.matrix(podobne_do_i)
 
 library(reshape)
@@ -51,4 +57,4 @@ mmrNodes <- data.frame(name=nazwy, group=grupy)
 library(networkD3)
 forceNetwork(Links=mmr2, Nodes=mmrNodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9)
+             Group = "group", opacity = 8)
