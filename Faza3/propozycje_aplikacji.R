@@ -48,13 +48,49 @@ mmr2[, 2] <- as.integer(as.factor(mmr2[, 2]))-1
 #mmr2[, 3] <- log(mmr2[, 3])
 mmr2[, 3] <- max(mmr2[, 3])/(mmr2[, 3])
 
-#mmr2 <- mmr[mmr[, 3]>0,] 
-names(mmr2) <- c('source', 'target', 'value')
-#nazwy <- unique(sort(c(rownames(mm),colnames(mm))))
-grupy <- as.integer(rownames(moviesInfo)[i]==nazwy)
-mmrNodes <- data.frame(name=nazwy, group=grupy)
 
+
+
+
+############
+###########
+haslo <- "8pxqs9nu6pb1lt46"
+
+library(RMySQL)
+
+# ładujemy sterownik do bazy danych
+sterownik <- MySQL()
+
+# aby się połączyć musimy podać użytkownika, hasło i wskazać bazę danych
+# inicjujemy połączenie z serwerem bazodanowym
+mpolaczenie = dbConnect(sterownik, 
+                        user='pbiecek', password=haslo, dbname='students', 
+                        host='beta.icm.edu.pl')
+
+
+dbListTables(mpolaczenie)
+dbGetQuery(mpolaczenie, "SELECT count(*) 
+           FROM Grabarz_Kosinski_Wasniewski")
+# count(*)
+# 1     9334
+
+
+
+# pobranie wszystkich filmow
+movies <- dbGetQuery(mpolaczenie, "SELECT * 
+                     FROM Grabarz_Kosinski_Wasniewski")
+
+name_genre <- movies[,c('title','genre')][!duplicated(movies$title),]
+name_genre$genre <- stri_extract_first_regex(name_genre$genre,'\\p{l}*')
+############
+############
+#mmrNodes <- data.frame(name=nazwy, group=grupy)
+mmrNodes <- name_genre[name_genre$title%in%nazwy,]
+mmrNodes <- mmrNodes[order(mmrNodes$title),]
+rownames(mmrNodes) <- NULL
+names(mmrNodes) <- c('name', 'group')
 library(networkD3)
 forceNetwork(Links=mmr2, Nodes=mmrNodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 8)
+             Group = "group", opacity = 0.9)
+
