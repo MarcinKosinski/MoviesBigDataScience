@@ -70,44 +70,44 @@ shinyServer(function(input,output){
       if (input$preferencje=="ogolnie") {
          i <- which(rownames(moviesInfo)==input$movie)
          podobne_filmy<-names(sort(moviesInfo[i, ],
-                                 decreasing=TRUE)[20:n])
+                                   decreasing=TRUE)[20:n])
          stri_paste(podobne_filmy, "\n")
       } else if (input$preferencje=="fabula") {
          i <- which(rownames(keywords)==input$movie)
          # trzeba pĂłĹşniej zminic macierz bo narzaie wszedzie jest ta sama
          podobne_filmy<-names(sort(keywords[i, ], 
-                                 decreasing=TRUE)[20:n])
+                                   decreasing=TRUE)[20:n])
          stri_paste(podobne_filmy, "\n") 
       } else { 
          i <- which(rownames(people)==input$movie)
          podobne_filmy<-names(sort(people[i, ],
-                                 decreasing=TRUE)[20:n])
+                                   decreasing=TRUE)[20:n])
          stri_paste(podobne_filmy, "\n") 
       }
    })
    
    
- 
+   
    
    output$graph <- renderForceNetwork({
       n <- as.numeric(input$liczba_filmow)
       k <- as.numeric(input$ile_podobnych_do_najpodobniejszych)
-            if(input$preferencje=="ogolnie"){
-               moviesInfo -> moviesInfo2
-               
-            }
-            if(input$preferencje=="fabula"){
-               keywords -> moviesInfo2
-            }
-            if(input$preferencje=="obsada"){
-               people -> moviesInfo2
-            }
+      if(input$preferencje=="ogolnie"){
+         moviesInfo -> moviesInfo2
+         
+      }
+      if(input$preferencje=="fabula"){
+         keywords -> moviesInfo2
+      }
+      if(input$preferencje=="obsada"){
+         people -> moviesInfo2
+      }
       i <- which(rownames(moviesInfo2)==input$movie)
       
       returnFamiliar(moviesInfo2,n,k,i) -> podobne_do_i 
       
       #nazwy <- unique(sort(c(rownames(mm),colnames(mm))))
-
+      
       mm <- as.matrix(podobne_do_i)
       
       #zamieniam na postac kolumnowa 
@@ -124,24 +124,25 @@ shinyServer(function(input,output){
       
       #mmr2 <- mmr[mmr[, 3]>0,] 
       names(mmr2) <- c('source', 'target', 'value')
-      nazwy <- unique(sort(c(rownames(mm),colnames(mm))))
-      grupy <- as.integer(rownames(moviesInfo2)[i]==nazwy)
-      mmrNodes <- data.frame(name=nazwy, group=grupy)
+      #nazwy <- unique(sort(c(rownames(mm),colnames(mm))))
+      #grupy <- as.integer(rownames(moviesInfo2)[i]==nazwy)
+      #mmrNodes <- data.frame(name=nazwy, group=grupy)
       
       name_genre <- movies[,c('title','genre')][!duplicated(movies$title),]
       name_genre$genre <- stri_extract_first_regex(name_genre$genre,'\\p{l}*')
       
-      #mmrNodes2 <- name_genre[name_genre$title %in% nazwy,]
-      #mmrNodes2 <- mmrNodes[order(mmrNodes$title),]
-      rownames(mmrNodes) <- NULL
-      names(mmrNodes) <- c('name', 'group')
-
-      forceNetwork(Links=mmr2, Nodes=mmrNodes, Source = "source",
+      mmrNodes2 <- name_genre[name_genre$title %in% nazwy,]
+      mmrNodes2 <- mmrNodes2[order(mmrNodes2$title),]
+      mmrNodes2$genre[rownames(moviesInfo2)[i]==mmrNodes2$title] <- 'aaa'
+      rownames(mmrNodes2) <- NULL
+      names(mmrNodes2) <- c('name', 'group')
+      
+      forceNetwork(Links=mmr2, Nodes=mmrNodes2, Source = "source",
                    Target = "target", Value = "value", NodeID = "name",
                    Group = "group", opacity = 0.9, linkWidth=1,
                    linkDistance=JS('function(d) {', paste('return d.value *', input$odleglosc,';'), '}'))
       
-
+      
    }
    )
    
