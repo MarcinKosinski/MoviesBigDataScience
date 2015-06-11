@@ -8,15 +8,18 @@ library(reshape)
 load("data/movies.rda")
 
 tytul <- 1:nrow(movies)
-names(tytul) <- movies$title
+ # names(tytul) <- movies$title
 # przy tych filmach robi sie jakis blad w select input  
-j<-which(stri_detect_regex(movies$title, "\\032"))
+#j <- which(stri_detect_regex(movies$title, "\\032"))
+names(tytul) <- stri_replace_all_regex(movies$title, "\\032", "")
+
+tytul <- stri_replace_all_regex(movies$title, "\\032", "")
 
 shinyUI(fluidPage(
    titlePanel("Projekt filmy"),
    sidebarLayout(sidebarPanel("",
           # wybór filmu
-         selectInput("movie","Wybierz film:",tytul[-j], 13),
+         selectInput("movie","Wybierz film:",tytul, "50 twarzy Greya"),
          # wybór preferencji
          radioButtons("preferencje",
                      "Wybierz preferencje dla podobych filmów:",
@@ -27,9 +30,9 @@ shinyUI(fluidPage(
                      "Wybierz liczbe podobnych filmów:",3:10, 5),
          
          selectInput("ile_podobnych_do_najpodobniejszych",
-                     "Wybierz liczbe podobnych filmów do podobnych:",0:10, 2),
+                     "Wybierz liczbe podobnych filmów do podobnych:",0:5, 2),
          sliderInput("odleglosc",
-                     "Przemnoż odległości w grafie :",min=1,max=100, value = 50)
+                     "Przemnoż odległości w grafie :",min=1,max=10, value = 50)
          ),
          
          
