@@ -33,7 +33,13 @@ shinyUI(fluidPage(
                      "Wybierz liczbe podobnych filmów do podobnych:",0:5, 2),
          sliderInput("odleglosc",
                      "Przemnoż odległości w grafie :",min=1,max=10, value = 50),
+<<<<<<< HEAD
+         h5("Autorzy serwisu: Marcin Kosiński, Mikołaj Waśniewski, Paweł Grabowski."),
+         h4(a("Kody", href="https://github.com/MarcinKosinski/MoviesBigDataScience"))
+         
+=======
          h5("Autorzy serwisu: Marcin Kosiński, Mikołaj Waśniewski, Paweł Grabowski.")
+>>>>>>> 19c663f9e71209560cc378d72a06df8080185735
          ),
          
          
@@ -53,7 +59,7 @@ shinyUI(fluidPage(
                      p("Lista podobnych filmów:"),
                      verbatimTextOutput("podobne_lista"),
                      p("Opis grafu:"),
-                     h5("Każdzy wierzchołek grafu reprezentuje jeden film. Na grafie ciemnym niebieskim kolorem zaznaczony jest wybrany film. Dla danego filmu pokazana jest wybrana liczba filmów, które
+                     h5("Każdzy wierzchołek grafu reprezentuje jeden film. Na grafie oddzielnym kolorem zaznaczony jest wybrany film. Dla danego filmu pokazana jest wybrana liczba filmów, które
                         są do niego najbardziej podobne. Długość krawędzi łącząca wierzchołki w grafie odpowiada podobieństwu filmów: im krótsza krawędź łącząca wierzchołki, tym filmy są bardziej do siebie 
                         podobne. Dla podobnych filmów do wybranego filmu, przedstawione są również filmy najbardziej podobne do nich. Dla tak wybranych sąsiadów sąsiadów, jeżeli pozostałe filmy są wśród 20 najbardziej
                         podobnych filmów do nich, to również są połączeni krawędzią, której długość odpowiada podobieństwu filmów. Kolory na grafie odpowiadają tematyce filmów. Jeżeli wierzchołki mają ten sam
