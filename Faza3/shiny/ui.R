@@ -33,7 +33,7 @@ shinyUI(fluidPage(
                      "Wybierz liczbe podobnych filmów do podobnych:",0:5, 2),
          sliderInput("odleglosc",
                      "Przemnoż odległości w grafie :",min=1,max=10, value = 50),
-         h5("Autorzy serwisu: Marcin Kosiński, Mikołaj Waśniowski, Paweł Grabowski.")
+         h5("Autorzy serwisu: Marcin Kosiński, Mikołaj Waśniewski, Paweł Grabowski.")
          ),
          
          
