@@ -139,7 +139,8 @@ shinyServer(function(input,output){
       
       forceNetwork(Links=mmr2, Nodes=mmrNodes2, Source = "source",
                    Target = "target", Value = "value", NodeID = "name",
-                   Group = "group", opacity = 0.9, linkWidth=1,
+                   Group = "group", opacity = 0.9, linkWidth=1, 
+                   linkColour = "#afafaf", fontSize=12, zoom=T, legend=T,
                    linkDistance=JS('function(d) {', paste('return d.value *', input$odleglosc,';'), '}'))
       
       

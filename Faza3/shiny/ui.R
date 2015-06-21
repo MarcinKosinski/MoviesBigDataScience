@@ -33,15 +33,12 @@ shinyUI(fluidPage(
                      "Wybierz liczbe podobnych filmów do podobnych:",0:5, 2),
          sliderInput("odleglosc",
                      "Przemnoż odległości w grafie :",min=1,max=10, value = 50),
-<<<<<<< HEAD
+
          h5("Autorzy serwisu: Marcin Kosiński, Mikołaj Waśniewski, Paweł Grabowski."),
          h4(a("Kody", href="https://github.com/MarcinKosinski/MoviesBigDataScience"))
+   ),
          
-=======
-         h5("Autorzy serwisu: Marcin Kosiński, Mikołaj Waśniewski, Paweł Grabowski.")
->>>>>>> 19c663f9e71209560cc378d72a06df8080185735
-         ),
-         
+
          
       mainPanel("",
             tabsetPanel(
